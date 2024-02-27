@@ -1,5 +1,9 @@
 This is the development space for Gurbani App using banidb library in python. Text me on whatsapp to contribute.
 
+Pre-requisites
+- Make sure you install the banidb module for the program to run
+- Install command: pip install banidb
+
 Usage:
 - Clone the repository using the https or ssh key
 - Run the main.py file
