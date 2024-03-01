@@ -27,16 +27,17 @@ def getShabadMatches():
 
     if (len(matchStore) == 0): print("No results found") 
     else: 
-        # print(f"{len(matchStore)} results found.")
-        # shabadChoice = eval(input("Enter shabad number: "))
-        # shabad_id = matchStore[shabadChoice]['shabad_id']
-        for num, shabad in matchStore.items():
-            if shabad['verse'] in shabadOrg['verse']:
-                shabad_id = matchStore[num]['shabad_id']
-                displayShabad(shabad_id)
-                break
-        else:
-            print("No matching shabad found")
+        print(f"{len(matchStore)} results found.")
+        shabadChoice = eval(input("Enter shabad number: "))
+        shabad_id = matchStore[shabadChoice]['shabad_id']
+        displayShabad(shabad_id)
+        # for num, shabad in matchStore.items():
+        #     if shabad['verse'] in shabadOrg['verse']:
+        #         shabad_id = matchStore[num]['shabad_id']
+        #         displayShabad(shabad_id)
+        #         break
+        # else:
+        #     print("No matching shabad found")
 
 def displayShabad(shabad_id):
     chosenShabad = banidb.shabad(shabad_id)
@@ -74,4 +75,5 @@ def turn_into_bani_query(text):
 # getShabadMatches(shabadQuery)
 
 # query = getShabadQuery()['query']
+
 getShabadMatches()
