@@ -23,9 +23,9 @@ New Operating Procedures with voice search:
 - Once you have the main.py file opened, run it
 - It will show that the program is listening
 - Recite the shabad that you want (complete shabad, not the initial letters of every word)
-- Once you are done, it will show the list of possible matches
+- Once you are done, it will try to show potential shabad matches
 - Select the shabad number that you want.
 - Finally, it will print the selected shabad
 
 TODO:
-1. Make the algorithm to return matching probability for the verse of shabad and the user input
+1. Optimise the algorithm to return matching probability for the verse of shabad and the user input

@@ -20,28 +20,35 @@ def get_shabad_matches(shabad_query, shabad_verse=""):
     """
     # TODO: Display the best match of shabad based on user input
 
-    print("Finding matching shabads...")
+    print(f"Finding matching shabads for \"{shabad_verse}\"")
     matching_shabad_collection = {}
     probability_threshold = 0
 
     matching_shabads = banidb.search(shabad_query)
+    print("-----------Best Shabad Matches-----------")
     for matches in matching_shabads['pages_data'].values():
         for shabad in matches:
             probability_threshold = get_match_probability(shabad_verse, shabad['verse'])
-            if probability_threshold > 80: # 80 is just a rough guess for match probability for now
+            if probability_threshold > 66: # 66 is based on conclusion that if two words are matched out of 3 based on the smallest required query length
                 print(f"{len(matching_shabad_collection) + 1}. {shabad['verse']} ({shabad['source']['writer']})")
                 matching_shabad_collection[len(matching_shabad_collection) + 1] = shabad
 
     if (len(matching_shabad_collection) == 0): print("No results found") 
     else: 
         print(f"{len(matching_shabad_collection)} results found.")
-        shabad_choice = eval(input("Enter shabad number: "))
-        try:
-            shabad_id = matching_shabad_collection[shabad_choice]['shabad_id']
-        except KeyError:
-            print("Not a valid option!")
-        else:
-            display_shabad(shabad_id)
+        while True:
+            try:
+                shabad_choice = eval(input("Enter shabad number: "))
+                shabad_id = matching_shabad_collection[shabad_choice]['shabad_id']
+            except KeyError:
+                print("Not a valid option!")
+            except SyntaxError:
+                print("Enter something!")
+            except NameError:
+                print("Try Again!")
+            else:
+                display_shabad(shabad_id)
+                break
 
 def get_match_probability(speech_input, shabad_verse):
     """
@@ -50,19 +57,18 @@ def get_match_probability(speech_input, shabad_verse):
     Returns 100 for exact match of shabad (should return 100 but is not returning more than 30)
     """
     matching_words = 0
+    matched_words = []
     speech_input = speech_input.split()
     shabad_verse = shabad_verse.split()
 
     # TODO: Decide factors to reduce number of comparisons
     # TODO: Calculate probability such that it returns 100 for exact match
-    for i in range(len(shabad_verse)):
-        try:
-            if speech_input[i] in shabad_verse:
-                matching_words += 1
-        except IndexError:
-            pass
-    print((matching_words/len(shabad_verse)) * 100)
-    return (matching_words/len(shabad_verse)) * 100
+    for i in speech_input:
+        if i in shabad_verse:
+            matching_words += 1
+            matched_words.append(i)
+            
+    return (matching_words/len(speech_input)) * 100
 
 def display_shabad(shabad_id):
     """
