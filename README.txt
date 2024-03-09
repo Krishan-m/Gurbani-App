@@ -1,15 +1,17 @@
 This is the development space for Gurbani App using banidb library in python. Text me on whatsapp to contribute.
 
 Pre-requisites
-- Make sure you install the following modules for the program to run
-- Install command (banidb): pip install banidb
-- Install command (speech_recognition): pip install SpeechRecognition
+Make sure you install the following modules for the program to run:
+- banidb
+- speech_recognition
+- PortAudio
+- PyAudio
 
-Usage:
+Usage
 - Clone the repository using the https or ssh key
 - Run the main.py file
 
-Operating the program:
+Operating the program
 - Once you have the main.py file opened, run it
 - It will prompt you to enter shabad
 - Enter initial letters of every word in shabad that you want to find
@@ -18,8 +20,7 @@ Operating the program:
 - Finally, it will print the selected shabad.
 
 ----------------------------------------------------
-
-New Operating Procedures with voice search:
+**New** Operating Procedures with voice search
 - Once you have the main.py file opened, run it
 - It will show that the program is listening
 - Recite the shabad that you want (complete shabad, not the initial letters of every word)
@@ -27,5 +28,5 @@ New Operating Procedures with voice search:
 - Select the shabad number that you want.
 - Finally, it will print the selected shabad
 
-TODO:
+TODO
 1. Optimise the algorithm to return matching probability for the verse of shabad and the user input
