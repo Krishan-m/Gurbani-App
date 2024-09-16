@@ -1,9 +1,20 @@
 import banidb
 import speech_recognition as sr
+import logging
+
+# Set the logging level to DEBUG when in debugging mode
+debug_mode = True  # Set this variable based on your debugging conditions
+
+# check the logging level
+if debug_mode:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.INFO)
 
 def get_shabad_query():
     """
-    Gets the user input by listening to the audio and then invokes get_shabad_matches() once the user input is taken and validated
+    Gets the user input by listening to the audio and then invokes get_shabad_matches() 
+    once the user input is taken and validated
     """
     while True:
         speech_input = search_from_speech()
@@ -20,32 +31,34 @@ def get_shabad_matches(shabad_query, shabad_verse=""):
     """
     # TODO: Display the best match of shabad based on user input
 
-    print(f"Finding matching shabads for \"{shabad_verse}\"")
+    logging.info(f"Finding matching shabads for \"{shabad_verse}\"")
     matching_shabad_collection = {}
     probability_threshold = 0
 
     matching_shabads = banidb.search(shabad_query)
-    print("-----------Best Shabad Matches-----------")
+    logging.info("-----------Best Shabad Matches-----------")
     for matches in matching_shabads['pages_data'].values():
         for shabad in matches:
             probability_threshold = get_match_probability(shabad_verse, shabad['verse'])
-            if probability_threshold > 66: # 66 is based on conclusion that if two words are matched out of 3 based on the smallest required query length
-                print(f"{len(matching_shabad_collection) + 1}. {shabad['verse']} ({shabad['source']['writer']})")
+            if probability_threshold > 66: 
+                # 66 is based on conclusion that if two words
+                # are matched out of 3 based on the smallest required query length
+                logging.info(f"{len(matching_shabad_collection) + 1}. {shabad['verse']} ({shabad['source']['writer']})")
                 matching_shabad_collection[len(matching_shabad_collection) + 1] = shabad
 
-    if (len(matching_shabad_collection) == 0): print("No results found") 
+    if (len(matching_shabad_collection) == 0): logging.info("No results found") 
     else: 
-        print(f"{len(matching_shabad_collection)} results found.")
+        logging.info(f"{len(matching_shabad_collection)} results found.")
         while True:
             try:
                 shabad_choice = eval(input("Enter shabad number: "))
                 shabad_id = matching_shabad_collection[shabad_choice]['shabad_id']
             except KeyError:
-                print("Not a valid option!")
+                logging.info("Not a valid option!")
             except SyntaxError:
-                print("Enter something!")
+                logging.info("Enter something!")
             except NameError:
-                print("Try Again!")
+                logging.info("Try Again!")
             else:
                 display_shabad(shabad_id)
                 break
@@ -76,8 +89,9 @@ def display_shabad(shabad_id):
     """
     chosen_shabad = banidb.shabad(shabad_id)
     for ver in chosen_shabad['verses']:
-        print(ver['verse'])
-    banidb.clear() # Not quite sure what this does. Maybe clears the cache. But it is still making a cache.dat in my folder which contains a json file for shabad on reading
+        logging.info(ver['verse'])
+    banidb.clear() # Not quite sure what this does. Maybe clears the cache. But it is still making a 
+                   #  cache.dat in my folder which contains a json file for shabad on reading
 
 def search_from_speech():
     """
@@ -92,8 +106,12 @@ def search_from_speech():
             # Making a Microphone object
             with sr.Microphone() as source:
                 rec.adjust_for_ambient_noise(source, duration=0.5)
-                print("Listening...")
-                audio = rec.listen(source)
+                
+                logging.info("Listening...")
+                # set timeout to 10 seconds
+                audio = rec.listen(source, timeout=10)
+
+                # Convert the audio to text 
                 audioText = rec.recognize_google(audio, language='pa-in')
 
                 return audioText
@@ -106,9 +124,14 @@ def turn_into_bani_query(text):
 
     Returns the bani query
     """
-    bani_qeury = ''
+    bani_query = ''
     for word in text.split():
-        bani_qeury +=  word[0]
-    return bani_qeury
+        bani_query +=  word[0]
+    
+    # logging.debug("Turning into bani query...")
+    # logging.debug("--------------------------------")
+    # logging.debug("bani_query:", bani_query)
+    return bani_query
 
+# Main function
 get_shabad_query()
