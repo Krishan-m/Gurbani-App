@@ -1,4 +1,4 @@
-This is the development space for Gurbani App using banidb library in python. Text me on whatsapp to contribute.
+This is the development space for Gurbani App using banidb library in python. Open for everyone to contribute.
 
 Pre-requisites
 - Make sure you install the banidb module for the program to run
@@ -15,3 +15,5 @@ Operating the program:
 - If shabad found, it will show you all the possible matches
 - Select the shabad number that you want.
 - Finally, it will print the selected shabad.
+
+Currently Active Branch: voice-search
